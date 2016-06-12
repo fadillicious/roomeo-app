@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use yii\filters\AccessControl;
+use yii\filters\AccessRule;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
@@ -16,10 +17,13 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout'],
+                'ruleConfig' => [
+                    'class' => AccessRule::className(),
+                ],
+                // 'only' => ['logout','index'],
                 'rules' => [
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['logout','index','contact','error'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -71,7 +75,8 @@ class SiteController extends Controller
     {
         Yii::$app->user->logout();
 
-        return $this->goHome();
+        // return $this->goHome();
+        return $this->redirect(['user/login']);
     }
 
     public function actionContact()
